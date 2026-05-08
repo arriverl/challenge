@@ -10,7 +10,7 @@ SIM := $(ROOT)sim
 SYNTH := $(ROOT)synth
 BUILD := $(ROOT)build
 
-.PHONY: all verify gen props sim synth dirs
+.PHONY: all verify gen props sim synth dirs anf dtheory gen-anf mapped-theory
 
 all: verify
 
@@ -32,3 +32,15 @@ sim: dirs
 
 synth: dirs
 	cd "$(ROOT)" && "$(YOSYS)" -s synth/yosys_sb.ys
+
+anf:
+	cd "$(SCRIPTS)" && "$(PYTHON)" coords_anf.py
+
+dtheory:
+	cd "$(SCRIPTS)" && "$(PYTHON)" d_theory_skeleton.py
+
+gen-anf:
+	cd "$(SCRIPTS)" && "$(PYTHON)" gen_sb_anf_verilog.py
+
+mapped-theory:
+	cd "$(SCRIPTS)" && "$(PYTHON)" d_theory_mapped.py

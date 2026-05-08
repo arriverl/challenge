@@ -21,6 +21,13 @@ def table_64() -> list[int]:
     return [s0(i) for i in range(64)]
 
 
+def coord_truth(out_bit: int) -> list[int]:
+    """Bit ``out_bit`` (0..5) of S(x) as length-64 vector, index x = 0..63 (x0 LSB)."""
+    if not 0 <= out_bit <= 5:
+        raise ValueError("out_bit must be 0..5")
+    return [(s0(i) >> out_bit) & 1 for i in range(64)]
+
+
 if __name__ == "__main__":
     t = table_64()
     print(" ".join(f"{v:02x}" for v in t))
