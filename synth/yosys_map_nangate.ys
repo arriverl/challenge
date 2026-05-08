@@ -1,0 +1,20 @@
+# NanGate45 mapping — MANUAL TEMPLATE only.
+#
+# Yosys `.ys` front-end does NOT Tcl-expand `$::env(...)`.
+# Automation writes `build/yosys_map_nangate_run.ys` with an embedded absolute path.
+# Run:
+#   python scripts/run_all_experiments.py
+#
+# To run by hand: copy the four lines below into a new `.ys`, replace LIB twice,
+# then from project root: yosys -s your_script.ys
+#
+# read_liberty -ignore_miss_func LIB
+# read_verilog -sv rtl/sb_lut_baseline.v
+# hierarchy -check -top SB
+# synth -top SB -flatten
+# opt
+# dfflibmap -liberty LIB
+# abc -liberty LIB
+# opt_clean
+# stat -liberty LIB
+# write_verilog -noattr -noparallelcase build/sb_mapped_nangate.v

@@ -1,0 +1,20 @@
+# Yosys template for SB (LUT baseline).
+# Paths are relative to project root (sbox_challenge2026/), e.g.:
+#   yosys -s synth/yosys_sb.ys
+# (cwd must be project root)
+
+read_verilog -sv rtl/sb_lut_baseline.v
+hierarchy -check -top SB
+
+proc
+opt
+fsm
+opt
+memory
+opt
+
+techmap
+opt
+
+stat
+write_verilog -noattr -noparallelcase build/sb_yosys_generic.v

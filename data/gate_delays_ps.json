@@ -1,0 +1,26 @@
+{
+  "title": "赛题二表2 NanGate 45nm 典型延时(ps)与面积(GE)，供 D_theory 工具读取",
+  "gates": {
+    "INV": { "delay_ps": 22.048, "area_ge": 0.67, "arity": 1 },
+    "BUF": { "delay_ps": 33.557, "area_ge": 1.0, "arity": 1 },
+    "NAND2": { "delay_ps": 27.886, "area_ge": 1.0, "arity": 2 },
+    "NOR2": { "delay_ps": 40.65, "area_ge": 1.0, "arity": 2 },
+    "AND2": { "delay_ps": 40.171, "area_ge": 1.33, "arity": 2 },
+    "OR2": { "delay_ps": 56.414, "area_ge": 1.33, "arity": 2 },
+    "XOR2": { "delay_ps": 73.019, "area_ge": 2.0, "arity": 2 },
+    "XNOR2": { "delay_ps": 57.604, "area_ge": 2.0, "arity": 2 },
+    "NAND3": { "delay_ps": 34.767, "area_ge": 1.33, "arity": 3 },
+    "OAI21": { "delay_ps": 32.651, "area_ge": 1.33, "arity": 3 },
+    "AOI21": { "delay_ps": 51.619, "area_ge": 1.33, "arity": 3 },
+    "NOR3": { "delay_ps": 61.543, "area_ge": 1.33, "arity": 3 },
+    "AND3": { "delay_ps": 51.869, "area_ge": 1.67, "arity": 3 },
+    "OR3": { "delay_ps": 85.84, "area_ge": 1.67, "arity": 3 },
+    "MUX2": { "delay_ps": 75.175, "area_ge": 2.33, "arity": 3 },
+    "OAI22": { "delay_ps": 54.596, "area_ge": 1.67, "arity": 4 },
+    "AOI22": { "delay_ps": 57.255, "area_ge": 1.67, "arity": 4 },
+    "NAND4": { "delay_ps": 44.487, "area_ge": 1.67, "arity": 4 },
+    "NOR4": { "delay_ps": 91.313, "area_ge": 1.67, "arity": 4 },
+    "AND4": { "delay_ps": 65.492, "area_ge": 2.0, "arity": 4 },
+    "OR4": { "delay_ps": 118.592, "area_ge": 2.0, "arity": 4 }
+  }
+}
