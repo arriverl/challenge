@@ -34,3 +34,4 @@ python scripts/run_all_experiments.py
 - **Liberty 报错 `Missing function on output ... CLKGATETST_X1`**：常见原因是时钟门控单元缺少 `function` 字段；生成脚本已使用 `read_liberty -ignore_miss_func`（组合电路映射不需要这些单元）。
 - **实验 CSV 过长**：默认会截断 `note` 列；需要完整 Yosys 日志可设置环境变量 `EXPERIMENT_FULL_LOG=1`。
 - **OpenSTA 卡住**：脚本末尾已带 `exit 0`，且自动使用 `sta -exit ...`。若仍超时可调 `EXPERIMENT_STA_TIMEOUT_SEC`（秒，`0` 表示不设超时）。
+- **OpenSTA 输出 `No paths found`**：纯组合模块须挂虚拟时钟并写 `-clock` 的 `set_input_delay`/`set_output_delay`；生成脚本已包含 `create_clock __sb_virtual ...`。

@@ -9,9 +9,10 @@ read_liberty $lib_path
 read_verilog build/sb_mapped_nangate.v
 link_design SB
 
-# Pure combinational design, no clocks required for max input->output delay report.
-set_input_delay 0 [all_inputs]
-set_output_delay 0 [all_outputs]
+# Combinational-only: define a virtual clock so STA builds PI→PO paths.
+create_clock -name __sb_virtual -period 1000
+set_input_delay 0 -clock __sb_virtual [all_inputs]
+set_output_delay 0 -clock __sb_virtual [all_outputs]
 
 report_checks -path_delay max -digits 4
 report_tns
