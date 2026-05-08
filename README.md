@@ -53,7 +53,7 @@ python coords_anf.py --pla-dir ../export_pla
 python d_theory_skeleton.py
 ```
 
-STA 自动生成脚本含 **`report_checks ... -nworst 48`** 便于扫最坏路径。
+STA 自动生成脚本默认使用兼容的 `report_checks -path_delay max`（部分 OpenSTA 版本不支持 `-nworst`）。
 
 ## 已替你落地的「能做的自动化」
 

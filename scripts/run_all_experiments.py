@@ -149,7 +149,6 @@ def write_sta_run_script(liberty: Path, dest: Path) -> None:
                 "set_output_delay 0 -clock __sb_virtual [all_outputs]",
                 "",
                 "report_checks -path_delay max -digits 6",
-                "report_checks -path_delay max -digits 6 -nworst 48",
                 "report_tns",
                 "report_wns",
                 "",

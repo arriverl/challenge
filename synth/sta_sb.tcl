@@ -15,7 +15,6 @@ set_input_delay 0 -clock __sb_virtual [all_inputs]
 set_output_delay 0 -clock __sb_virtual [all_outputs]
 
 report_checks -path_delay max -digits 6
-report_checks -path_delay max -digits 6 -nworst 48
 report_tns
 report_wns
 

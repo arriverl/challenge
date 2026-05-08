@@ -63,7 +63,17 @@ def parse_instances(src: str) -> list[tuple[str, dict[str, str]]]:
     """Return list of (cell_type, {port: net})."""
     src = strip_comments(src)
     out: list[tuple[str, dict[str, str]]] = []
-    for m in re.finditer(r"([A-Za-z][A-Za-z0-9_]*)\s+([A-Za-z0-9_]+)\s*\(([^)]*)\)\s*;", src, re.DOTALL):
+    # Robust split by statements to tolerate escaped identifiers and multiline pins.
+    for stmt in src.split(";"):
+        s = stmt.strip()
+        if not s or "(" not in s or "." not in s:
+            continue
+        # Skip declarations/assign/module headers.
+        if re.match(r"^(module|endmodule|input|output|wire|assign|always|if|for)\b", s):
+            continue
+        m = re.match(r"^([A-Za-z_\\$][A-Za-z0-9_\\$]*)\s+(.+?)\s*\((.*)\)\s*$", s, re.DOTALL)
+        if not m:
+            continue
         ctype, _inst, blob = m.groups()
         ports: dict[str, str] = {}
         for pm in re.finditer(r"\.([A-Za-z0-9_]+)\s*\(\s*([^)]+?)\s*\)", blob):
