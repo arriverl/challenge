@@ -33,3 +33,4 @@ python scripts/run_all_experiments.py
 - **NanGate 映射**：不要在 `.ys` 里写 `$::env(...)`（不会被 Tcl 展开）。一键脚本会生成 `build/yosys_map_nangate_run.ys` 与 `build/sta_sb_run.tcl`。
 - **Liberty 报错 `Missing function on output ... CLKGATETST_X1`**：常见原因是时钟门控单元缺少 `function` 字段；生成脚本已使用 `read_liberty -ignore_miss_func`（组合电路映射不需要这些单元）。
 - **实验 CSV 过长**：默认会截断 `note` 列；需要完整 Yosys 日志可设置环境变量 `EXPERIMENT_FULL_LOG=1`。
+- **OpenSTA 卡住**：脚本末尾已带 `exit 0`，且自动使用 `sta -exit ...`。若仍超时可调 `EXPERIMENT_STA_TIMEOUT_SEC`（秒，`0` 表示不设超时）。

@@ -16,3 +16,6 @@ set_output_delay 0 [all_outputs]
 report_checks -path_delay max -digits 4
 report_tns
 report_wns
+
+# Batch runs must exit or OpenSTA waits for interactive input.
+exit 0

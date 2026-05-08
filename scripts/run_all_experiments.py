@@ -141,6 +141,9 @@ def write_sta_run_script(liberty: Path, dest: Path) -> None:
                 "report_tns",
                 "report_wns",
                 "",
+                "# Without this, OpenSTA waits on stdin (interactive) and automation hangs.",
+                "exit 0",
+                "",
             ]
         ),
         encoding="utf-8",
@@ -264,22 +267,52 @@ def main() -> int:
                 )
             )
         else:
-            proc_sta = subprocess.run(
-                [sta_exe, str(sta_run)],
-                cwd=str(ROOT),
-                capture_output=True,
-                text=True,
-                encoding="utf-8",
-                errors="replace",
-            )
-            rows.append(
-                StepResult(
-                    name="nangate_sta",
-                    status="ok" if proc_sta.returncode == 0 else "fail",
-                    returncode=proc_sta.returncode,
-                    note=(proc_sta.stdout + "\n" + proc_sta.stderr).strip(),
+            # Prefer `sta -exit` (batch); TCL also ends with `exit 0` so older sta without `-exit` still exits.
+            sta_timeout = os.getenv("EXPERIMENT_STA_TIMEOUT_SEC", "600").strip()
+            try:
+                to = int(sta_timeout)
+            except ValueError:
+                to = 600
+            timeout_kw = {"timeout": to} if to > 0 else {}
+
+            def _run_sta(cmd: list[str]) -> subprocess.CompletedProcess[str]:
+                return subprocess.run(
+                    cmd,
+                    cwd=str(ROOT),
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
+                    **timeout_kw,
                 )
-            )
+
+            try:
+                proc_sta = _run_sta([sta_exe, "-exit", str(sta_run)])
+                comb = ((proc_sta.stderr or "") + (proc_sta.stdout or "")).lower()
+                if proc_sta.returncode != 0 and any(
+                    s in comb for s in ("unknown option", "invalid option", "bad option", "illegal option")
+                ):
+                    proc_sta = _run_sta([sta_exe, str(sta_run)])
+                rows.append(
+                    StepResult(
+                        name="nangate_sta",
+                        status="ok" if proc_sta.returncode == 0 else "fail",
+                        returncode=proc_sta.returncode,
+                        note=(proc_sta.stdout + "\n" + proc_sta.stderr).strip(),
+                    )
+                )
+            except subprocess.TimeoutExpired as exc:
+                rows.append(
+                    StepResult(
+                        name="nangate_sta",
+                        status="fail",
+                        returncode=124,
+                        note=(
+                            f"timeout after {to}s (set EXPERIMENT_STA_TIMEOUT_SEC or 0 to disable); "
+                            f"partial out: {(exc.stdout or '')[:4000]}"
+                        ),
+                    )
+                )
 
     out = write_csv(rows)
     print(f"Wrote summary: {out}")
